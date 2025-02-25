@@ -11,7 +11,6 @@ Eliminar una tarea
 
 Instalación
 Clona el repositorio: 
-https://github.com/SoulJaZ/Task-Tracker-Cli
 git clone https://github.com/SoulJaZ/Task-Tracker-Cli/Task-Tracker-Cli.git
 cd Task-Tracker-Cli
 
