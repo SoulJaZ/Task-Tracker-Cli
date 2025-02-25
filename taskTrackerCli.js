@@ -8,7 +8,7 @@ const ARCHIVO_TAREAS = path.join(__dirname, "tareas.json");
 function cargarTareas() {
   // Condicional que verifica si no es verdadero que existe alguna tarea en el archivo JSON.
   if (!fs.existsSync(ARCHIVO_TAREAS)) {
-    return [];
+    return []; // Si el archivo no existe, retorna un array vacío.
   } else {
     return JSON.parse(fs.readFileSync(ARCHIVO_TAREAS, "utf-8"));
   }
@@ -23,7 +23,7 @@ function guardarTareas(tareas) {
 // Función para agregar una+ nueva tarea.
 function agregarTareas(descripcion) {
 
-    let tareas = guardarTareas(); // Variable que almacena las tareas y las relaciona a través del método 'guardarTarea'
+    let tareas = cargarTareas(); // Cargar las tareas existentes.
     let nuevaTarea = {
         id: tareas.length ? tareas[tareas.length - 1].id + 1 : 1,
         description: descripcion,
@@ -39,30 +39,29 @@ function agregarTareas(descripcion) {
 // Función para actualizar la descripción de una tatea existente
 function actualizarTarea(id, nuevaDescripcion) {
     
-    let tareas = cargarTareas(); // Variable que almacena las tareas y las relaciona a través del método 'cargarTarea'
-    for (let index = 0; index < tareas.length; index++) {
-        if (tareas[index].id === id) {
+        let tareas = cargarTareas(); // Cargar las tareas existentes.    
+        for (let index = 0; index < tareas.length; index++) {
+            if (tareas[index].id === id) {
             tareas[index].descripcion = nuevaDescripcion;
             tareas[index].updateAt = new Date().toISOString();
             guardarTareas(tareas) // Instanciar el método 'guardarTareas' con la variable 'tareas' como argumento.
             console.log(`Tarea actualizada exitosamente (ID: ${tareas[index].id})`);
+            }   
         }
-        
-    }
 }
 
 // Función para eliminar una tarea por su ID.
 function eliminarTarea(id) {
     
     let tareas = cargarTareas(); // Variable que almacena las tareas y las relaciona a través del método 'cargarTarea'.
-    let filtradorTareas = [] // Arreglo que representa y almacena la data de la busqueda de la tarea.
+    let filtradorTareas = tareas.filter(tarea => tarea.id !== id); // Arreglo que representa y almacena la data de la busqueda de la tarea.
 
-    for (let index = 0; index < tareas.length; index++) {
-        if (tareas[index].id !== id) {
-            filtradorTareas.push(tareas[index]);
-        }        
+    if (tareas.length === filtradorTareas.length) {
+        console.log("Tarea no encontrada.");
+        return;
     }
-    console.log(`Tarea eliminada exitosamente (ID: ${tareas[index].id})`);
+    guardarTareas(filtradorTareas);
+    console.log(`Tarea eliminada exitosamente (ID: ${id})`);
 }
 
 // Función paa cambiar el estado de una tarea. 
@@ -102,7 +101,7 @@ const argumento2 = argumentos.slice(2).join(' ');
 if (comandos === 'agregar'){
     agregarTareas(argumento1);
 }else if (comandos === 'actualizar'){
-    actualizarTarea(parseInt(argumento1)(argumento2));
+    actualizarTarea(parseInt(argumento1),argumento2);
 }else if (comandos === 'eliminar'){
     eliminarTarea(parseInt(argumento1));
 }else if (comandos === 'cambiar-estado-tarea'){
