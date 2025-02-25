@@ -97,7 +97,7 @@ function listaTareas(status) {
 const argumentos = process.argv.slice(2);
 const comandos = argumentos[0];
 const argumento1 = argumentos[1];
-const argumento2 = argumentos.slice[2].join(' ');
+const argumento2 = argumentos.slice(2).join(' ');
 
 if (comandos === 'agregar'){
     agregarTareas(argumento1);
